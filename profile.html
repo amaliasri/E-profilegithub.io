@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Student E-Profile</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+	    <img src="https://logoeps.com/wp-content/uploads/2013/06/uitm-vector-logo.png" width="30" height="30" class="d-inline-block align-text-top"> 
+        <a class="navbar-brand" href="profiles.php">UiTM Student E-Profile</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="profiles.php">Profiles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 id="profile-name"></h3>
+            </div>
+            <div class="card-body">
+                <img id="profile-image" 
+                     src="" 
+                     width="128" 
+                     height="128" 
+                     class="rounded-circle mb-3" 
+                     alt="Profile picture">
+                <p><strong>Course :</strong> <span id="profile-course"></span></p>
+                <p><strong>Email :</strong> <span id="profile-email"></span></p>
+                <p><strong>Phone :</strong> <span id="profile-phone"></span></p>
+                <a href="profiles.html" class="btn btn-secondary">Back to Profiles</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <p>&copy; 2025 Student E-Profile. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const profileId = parseInt(urlParams.get('id'));
+
+        fetch('profiles.json')
+            .then(response => response.json())
+            .then(profiles => {
+                const profile = profiles.find(p => p.id === profileId);
+				const urlParams = new URLSearchParams(window.location.search);
+const profileId = parseInt(urlParams.get('id'));
+
+if (isNaN(profileId)) {
+    alert('Invalid profile ID.');
+    window.location.href = 'profiles.html';
+}
+
+                if (profile) {
+                    document.getElementById('profile-name').textContent = profile.name;
+                    document.getElementById('profile-image').src = profile.image_path;
+                    document.getElementById('profile-image').alt = `${profile.name}'s profile picture`;
+                    document.getElementById('profile-course').textContent = profile.course;
+                    document.getElementById('profile-email').textContent = profile.email;
+                    document.getElementById('profile-phone').textContent = profile.phone;
+                } else {
+                    alert('Profile not found.');
+                    window.location.href = 'profiles.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading profile:', error);
+                alert('An error occurred while loading the profile.');
+            });
+    </script>
+</body>
+</html>
